@@ -2,52 +2,59 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Bot, Zap, Shield, BarChart3, Clock, Users, TrendingDown, Headphones } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Bot, Zap, Shield, BarChart3, Clock } from 'lucide-react';
+import Image from 'next/image';
 
 const DEFAULT_FEATURES = {
   title: 'Advanced Robotics Solutions',
   subtitle:
     'Cutting-edge technology designed to transform your operations with intelligent automation',
-  features: [
+  tabs: [
     {
+      id: 'ai-automation',
       title: 'AI-Powered Automation',
       description:
-        'Advanced machine learning algorithms that adapt and optimize performance in real-time for maximum efficiency.',
+        'Our advanced machine learning algorithms continuously adapt and optimize performance in real-time. The system learns from operational patterns, predicts maintenance needs, and automatically adjusts workflows to maximize efficiency. With neural network processing and deep learning capabilities, our robots can handle complex decision-making tasks that traditionally required human intervention.',
+      imageUrl:
+        'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&h=400&fit=crop&crop=center',
+      imageAlt: 'AI-powered robotic automation system',
     },
     {
+      id: 'integration',
       title: 'Seamless Integration',
       description:
-        'Plug-and-play compatibility with existing systems, ensuring smooth deployment without operational disruption.',
+        "Designed with plug-and-play compatibility, our robotics solutions integrate effortlessly with your existing infrastructure. Whether you're running legacy systems or cutting-edge technology, our adaptive interfaces ensure smooth deployment without operational disruption. Pre-built connectors for major industrial protocols and cloud platforms make implementation straightforward and cost-effective.",
+      imageUrl:
+        'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=400&fit=crop&crop=center',
+      imageAlt: 'Seamless system integration interface',
     },
     {
+      id: 'monitoring',
       title: '24/7 Monitoring',
       description:
-        'Continuous system surveillance with proactive alerts and automated maintenance scheduling.',
+        'Continuous system surveillance ensures optimal performance around the clock. Our monitoring platform provides real-time health checks, predictive maintenance alerts, and automated diagnostic reports. Advanced sensors track performance metrics, environmental conditions, and operational efficiency, enabling proactive maintenance scheduling and minimizing unexpected downtime.',
+      imageUrl:
+        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop&crop=center',
+      imageAlt: '24/7 monitoring dashboard and analytics',
     },
     {
-      title: 'Scalable Deployment',
-      description:
-        'Flexible architecture that grows with your business needs, from single units to enterprise-wide implementations.',
-    },
-    {
-      title: 'Cost Reduction',
-      description:
-        'Significant operational savings through optimized workflows and reduced manual labor requirements.',
-    },
-    {
+      id: 'safety',
       title: 'Safety Protocols',
       description:
-        'Comprehensive safety systems with emergency stops, collision detection, and compliance monitoring.',
+        'Comprehensive safety systems protect both equipment and personnel through multiple layers of protection. Emergency stop mechanisms, collision detection sensors, and compliance monitoring ensure operations meet the highest safety standards. Our robots feature advanced proximity sensors, safety-rated controllers, and fail-safe mechanisms that immediately halt operations when potential hazards are detected.',
+      imageUrl:
+        'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop&crop=center',
+      imageAlt: 'Safety protocols and protective systems',
     },
     {
+      id: 'analytics',
       title: 'Real-Time Analytics',
       description:
-        'Advanced data visualization and performance metrics to drive informed decision-making.',
-    },
-    {
-      title: 'Expert Support',
-      description:
-        'Dedicated technical support team available around the clock for assistance and optimization.',
+        'Transform operational data into actionable insights with our advanced analytics platform. Real-time dashboards provide comprehensive performance metrics, efficiency trends, and predictive analytics. Machine learning algorithms identify optimization opportunities, track KPIs, and generate detailed reports that drive informed decision-making and continuous improvement across your operations.',
+      imageUrl:
+        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop&crop=center',
+      imageAlt: 'Real-time analytics and data visualization',
     },
   ],
 } as const;
@@ -57,25 +64,19 @@ type FeaturesProps = Partial<typeof DEFAULT_FEATURES>;
 export default function Features(props: FeaturesProps) {
   const config = { ...DEFAULT_FEATURES, ...props };
 
-  const renderFeatureIcon = (index: number) => {
-    const iconClass = 'h-8 w-8';
-    switch (index) {
-      case 0:
+  const renderTabIcon = (tabId: string) => {
+    const iconClass = 'h-5 w-5';
+    switch (tabId) {
+      case 'ai-automation':
         return <Bot className={iconClass} />;
-      case 1:
+      case 'integration':
         return <Zap className={iconClass} />;
-      case 2:
+      case 'monitoring':
         return <Clock className={iconClass} />;
-      case 3:
-        return <Users className={iconClass} />;
-      case 4:
-        return <TrendingDown className={iconClass} />;
-      case 5:
+      case 'safety':
         return <Shield className={iconClass} />;
-      case 6:
+      case 'analytics':
         return <BarChart3 className={iconClass} />;
-      case 7:
-        return <Headphones className={iconClass} />;
       default:
         return <Bot className={iconClass} />;
     }
@@ -97,31 +98,67 @@ export default function Features(props: FeaturesProps) {
           </p>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {config.features.map((feature, idx) => (
-            <Card
-              key={idx}
-              className="bg-card text-card-foreground border-border hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group"
-            >
-              <CardContent className="p-6">
-                {/* Icon */}
-                <div className="mb-4 text-primary group-hover:scale-110 transition-transform duration-300">
-                  {renderFeatureIcon(idx)}
-                </div>
+        {/* Tabbed Features */}
+        <Tabs defaultValue={config.tabs[0].id} className="w-full">
+          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 mb-12 h-auto p-1">
+            {config.tabs.map(tab => (
+              <TabsTrigger
+                key={tab.id}
+                value={tab.id}
+                className="flex flex-col sm:flex-row items-center gap-2 p-3 text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                {renderTabIcon(tab.id)}
+                <span
+                  className="hidden sm:inline"
+                  data-editable={`tabs[${config.tabs.indexOf(tab)}].title`}
+                >
+                  {tab.title}
+                </span>
+                <span
+                  className="sm:hidden text-xs text-center"
+                  data-editable={`tabs[${config.tabs.indexOf(tab)}].title`}
+                >
+                  {tab.title}
+                </span>
+              </TabsTrigger>
+            ))}
+          </TabsList>
 
-                {/* Content */}
-                <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
-                  <span data-editable={`features[${idx}].title`}>{feature.title}</span>
-                </h3>
+          {config.tabs.map((tab, idx) => (
+            <TabsContent key={tab.id} value={tab.id} className="mt-0">
+              <Card className="bg-card text-card-foreground border-border overflow-hidden">
+                <CardContent className="p-0">
+                  <div className="grid lg:grid-cols-2 gap-0">
+                    {/* Image */}
+                    <div className="relative h-64 lg:h-96 order-2 lg:order-1">
+                      <Image
+                        src={tab.imageUrl}
+                        alt={tab.imageAlt}
+                        fill
+                        className="object-cover"
+                        data-editable-src={`tabs[${idx}].imageUrl`}
+                      />
+                    </div>
 
-                <p className="text-muted-foreground leading-relaxed">
-                  <span data-editable={`features[${idx}].description`}>{feature.description}</span>
-                </p>
-              </CardContent>
-            </Card>
+                    {/* Content */}
+                    <div className="p-8 lg:p-12 flex flex-col justify-center order-1 lg:order-2">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="text-primary">{renderTabIcon(tab.id)}</div>
+                        <h3 className="text-2xl lg:text-3xl font-bold">
+                          <span data-editable={`tabs[${idx}].title`}>{tab.title}</span>
+                        </h3>
+                      </div>
+
+                      <p className="text-muted-foreground leading-relaxed text-lg">
+                        <span data-editable={`tabs[${idx}].description`}>{tab.description}</span>
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
           ))}
-        </div>
+        </Tabs>
 
         {/* Bottom CTA */}
         <div className="text-center mt-16">
