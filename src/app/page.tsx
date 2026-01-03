@@ -1,5 +1,4 @@
-import Hero from '@/components/sections/home/Hero'
-import Pricing from '@/components/sections/home/Pricing'
+import { Hero, Features, Pricing } from '@/components/sections/home'
 
 export default function HomePage() {
   return (
@@ -8,6 +7,9 @@ export default function HomePage() {
         <Hero />
       </section>
       <section id="features">
+        <Features />
+      </section>
+      <section id="pricing">
         <Pricing />
       </section>
     </>
