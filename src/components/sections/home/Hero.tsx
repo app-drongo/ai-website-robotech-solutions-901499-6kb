@@ -3,30 +3,44 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Play, Zap, Shield, TrendingUp } from 'lucide-react';
+import { ArrowRight, Rocket, Shield, Zap, Play, CheckCircle } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useSmartNavigation } from '@/hooks/useSmartNavigation';
 
 const DEFAULT_HERO = {
-  title: 'Intelligent Robotics for Modern Business',
+  badge: 'Unified Deploy Platform',
+  title: 'Deploy Anywhere, Manage Everything',
   subtitle:
-    "Transform your operations with advanced automation that's simple to deploy and proven to deliver results",
-  description:
-    'Our scalable robotic solutions seamlessly integrate into your workflow, reducing costs by up to 40% while boosting productivity across manufacturing, logistics, and service industries.',
-  primaryCtaText: 'Start Your Transformation',
-  primaryCtaHref: '/get-started',
-  secondaryCtaText: 'Watch Demo',
+    'Streamline your deployment pipeline with our unified platform. Deploy to any cloud, manage all environments, and scale with confidence.',
+  primaryCta: 'Start Deploying',
+  primaryCtaHref: '/signup',
+  secondaryCta: 'Watch Demo',
   secondaryCtaHref: '/demo',
   heroImageUrl:
-    'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1200&auto=format&fit=crop',
-  heroImageAlt: 'Advanced robotic arm in modern manufacturing facility',
-  trustBadge: 'Trusted by 500+ Companies',
-  features: ['40% Cost Reduction', '99.9% Uptime Guarantee', '24/7 Expert Support'],
+    'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80',
+  heroImageAlt: 'Modern deployment dashboard interface',
+  features: [
+    {
+      title: 'Lightning Fast',
+      description:
+        'Deploy in seconds, not minutes. Our optimized infrastructure ensures rapid deployment cycles.',
+    },
+    {
+      title: 'Enterprise Security',
+      description:
+        'Bank-grade security with end-to-end encryption, compliance monitoring, and audit trails.',
+    },
+    {
+      title: 'Auto-Scale',
+      description:
+        'Intelligent scaling that adapts to your traffic patterns automatically, saving costs.',
+    },
+  ],
   stats: [
-    { label: 'Efficiency Boost', value: '3x', icon: 'TrendingUp' },
-    { label: 'Setup Time', value: '24hrs', icon: 'Zap' },
-    { label: 'ROI Timeline', value: '6mo', icon: 'Shield' },
+    { value: '99.9%', label: 'Uptime' },
+    { value: '< 30s', label: 'Deploy Time' },
+    { value: '50+', label: 'Integrations' },
   ],
 } as const;
 
@@ -37,141 +51,134 @@ export default function Hero(props: HeroProps) {
   const navigate = useSmartNavigation();
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
-  const handlePrimaryClick = () => {
+  const handlePrimaryCta = () => {
     navigate(config.primaryCtaHref);
   };
 
-  const handleSecondaryClick = () => {
-    setIsVideoPlaying(true);
-    navigate(config.secondaryCtaHref);
-  };
-
-  const getStatIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'TrendingUp':
-        return <TrendingUp className="h-5 w-5" />;
-      case 'Zap':
-        return <Zap className="h-5 w-5" />;
-      case 'Shield':
-        return <Shield className="h-5 w-5" />;
-      default:
-        return <Zap className="h-5 w-5" />;
+  const handleSecondaryCta = () => {
+    if (config.secondaryCtaHref === '/demo') {
+      setIsVideoPlaying(true);
+    } else {
+      navigate(config.secondaryCtaHref);
     }
   };
 
   return (
-    <section id="hero" className="bg-background text-foreground py-20 lg:py-32 overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
-          {/* Content Column */}
-          <div className="space-y-8">
-            {/* Trust Badge */}
-            <Badge
-              variant="secondary"
-              className="bg-accent text-accent-foreground px-4 py-2 text-sm font-medium"
-            >
-              <span data-editable="trustBadge">{config.trustBadge}</span>
-            </Badge>
+    <section id="hero" className="relative bg-background text-foreground overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
 
-            {/* Headlines */}
+      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* Content */}
+          <div className="space-y-8">
             <div className="space-y-6">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+              <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                <Rocket className="h-4 w-4 mr-2" />
+                <span data-editable="badge">{config.badge}</span>
+              </Badge>
+
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
                 <span data-editable="title">{config.title}</span>
               </h1>
 
-              <p className="text-xl sm:text-2xl text-muted-foreground leading-relaxed">
+              <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl">
                 <span data-editable="subtitle">{config.subtitle}</span>
               </p>
-
-              <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-                <span data-editable="description">{config.description}</span>
-              </p>
             </div>
 
-            {/* Feature Pills */}
-            <div className="flex flex-wrap gap-3">
-              {config.features.map((feature, idx) => (
-                <Badge
-                  key={idx}
-                  variant="outline"
-                  className="bg-primary/5 text-primary border-primary/20 px-3 py-1"
-                >
-                  <span data-editable={`features[${idx}]`}>{feature}</span>
-                </Badge>
-              ))}
-            </div>
-
-            {/* CTA Buttons */}
+            {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 size="lg"
-                onClick={handlePrimaryClick}
+                onClick={handlePrimaryCta}
                 data-editable-href="primaryCtaHref"
                 data-href={config.primaryCtaHref}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-lg font-semibold group"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-lg"
               >
-                <span data-editable="primaryCtaText">{config.primaryCtaText}</span>
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                <span data-editable="primaryCta">{config.primaryCta}</span>
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
 
               <Button
                 variant="outline"
                 size="lg"
-                onClick={handleSecondaryClick}
+                onClick={handleSecondaryCta}
                 data-editable-href="secondaryCtaHref"
                 data-href={config.secondaryCtaHref}
-                className="border-border text-foreground hover:bg-accent hover:text-accent-foreground px-8 py-6 text-lg font-semibold group"
+                className="px-8 py-6 text-lg border-border hover:bg-accent"
               >
-                <Play className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
-                <span data-editable="secondaryCtaText">{config.secondaryCtaText}</span>
+                <Play className="mr-2 h-5 w-5" />
+                <span data-editable="secondaryCta">{config.secondaryCta}</span>
               </Button>
             </div>
 
-            {/* Stats Cards */}
-            <div className="grid grid-cols-3 gap-4 pt-8">
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-8 pt-8 border-t border-border">
               {config.stats.map((stat, idx) => (
-                <Card key={idx} className="bg-card text-card-foreground border-border">
-                  <CardContent className="p-4 text-center">
-                    <div className="flex justify-center mb-2 text-primary">
-                      {getStatIcon(stat.icon)}
+                <div key={idx} className="text-center">
+                  <div className="text-2xl sm:text-3xl font-bold text-primary">
+                    <span data-editable={`stats[${idx}].value`}>{stat.value}</span>
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    <span data-editable={`stats[${idx}].label`}>{stat.label}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Hero Image */}
+          <div className="relative">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-card">
+              <Image
+                src={config.heroImageUrl}
+                alt={config.heroImageAlt}
+                data-editable-src="heroImageUrl"
+                width={800}
+                height={600}
+                className="w-full h-auto object-cover"
+                priority
+              />
+
+              {/* Overlay with play button for demo */}
+              {!isVideoPlaying && (
+                <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+                  <Button
+                    size="lg"
+                    onClick={handleSecondaryCta}
+                    className="bg-white/90 text-black hover:bg-white rounded-full p-4"
+                  >
+                    <Play className="h-8 w-8" />
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            {/* Floating feature cards */}
+            <div className="absolute -bottom-6 -left-6 right-6 space-y-3">
+              {config.features.map((feature, idx) => (
+                <Card key={idx} className="bg-card/95 backdrop-blur-sm border-border shadow-lg">
+                  <CardContent className="p-4 flex items-center gap-3">
+                    <div className="text-primary">
+                      {idx === 0 && <Zap className="h-5 w-5" />}
+                      {idx === 1 && <Shield className="h-5 w-5" />}
+                      {idx === 2 && <CheckCircle className="h-5 w-5" />}
                     </div>
-                    <div className="text-2xl font-bold text-foreground">
-                      <span data-editable={`stats[${idx}].value`}>{stat.value}</span>
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      <span data-editable={`stats[${idx}].label`}>{stat.label}</span>
+                    <div>
+                      <h4 className="font-semibold text-sm">
+                        <span data-editable={`features[${idx}].title`}>{feature.title}</span>
+                      </h4>
+                      <p className="text-xs text-muted-foreground">
+                        <span data-editable={`features[${idx}].description`}>
+                          {feature.description}
+                        </span>
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
               ))}
             </div>
-          </div>
-
-          {/* Image Column */}
-          <div className="relative">
-            <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10 p-8">
-              <Image
-                src={config.heroImageUrl}
-                alt={config.heroImageAlt}
-                data-editable-src="heroImageUrl"
-                width={600}
-                height={400}
-                className="rounded-xl shadow-2xl w-full h-auto object-cover"
-                priority
-              />
-
-              {/* Floating Elements */}
-              <div className="absolute -top-4 -right-4 bg-primary text-primary-foreground rounded-full p-4 shadow-lg animate-pulse">
-                <Zap className="h-6 w-6" />
-              </div>
-
-              <div className="absolute -bottom-4 -left-4 bg-accent text-accent-foreground rounded-full p-4 shadow-lg">
-                <Shield className="h-6 w-6" />
-              </div>
-            </div>
-
-            {/* Background Decoration */}
-            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-primary/5 to-transparent rounded-3xl transform rotate-3 scale-105"></div>
           </div>
         </div>
       </div>
