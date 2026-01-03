@@ -2,13 +2,13 @@
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, X, Zap } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { useSmartNavigation } from '@/hooks/useSmartNavigation';
+import Image from 'next/image';
 
 const DEFAULT_NAVIGATION = {
   brandName: 'RoboTech',
-  brandTagline: 'Intelligent Robotics',
   navItems: [
     { label: 'Home', href: '#hero' },
     { label: 'Features', href: '#features' },
@@ -49,25 +49,17 @@ export default function Navigation(props: NavigationProps) {
       >
         <div className="flex items-center justify-between h-16">
           {/* Brand */}
-          <div className="flex items-center space-x-2">
-            <div className="bg-primary text-primary-foreground p-2 rounded-lg">
-              <Zap className="h-5 w-5" />
-            </div>
-            <div className="flex flex-col">
-              <span
-                className="text-lg font-bold text-foreground cursor-pointer hover:text-primary transition-colors"
-                onClick={() => handleNavClick('#hero')}
-                data-editable="brandName"
-              >
-                {config.brandName}
-              </span>
-              <span
-                className="text-xs text-muted-foreground hidden sm:block"
-                data-editable="brandTagline"
-              >
-                {config.brandTagline}
-              </span>
-            </div>
+          <div className="flex items-center">
+            <Image
+              src="/Webline-logo.png"
+              alt={config.brandName}
+              width={140}
+              height={40}
+              className="h-auto w-32 sm:w-36 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => handleNavClick('#hero')}
+              data-editable-src="logoUrl"
+              priority
+            />
           </div>
 
           {/* Desktop Navigation */}
@@ -116,22 +108,15 @@ export default function Navigation(props: NavigationProps) {
                 className="bg-card text-card-foreground border-border w-80"
               >
                 <div className="flex items-center justify-between mb-8">
-                  <div className="flex items-center space-x-2">
-                    <div className="bg-primary text-primary-foreground p-2 rounded-lg">
-                      <Zap className="h-5 w-5" />
-                    </div>
-                    <div className="flex flex-col">
-                      <span
-                        className="text-lg font-bold text-card-foreground"
-                        data-editable="brandName"
-                      >
-                        {config.brandName}
-                      </span>
-                      <span className="text-xs text-muted-foreground" data-editable="brandTagline">
-                        {config.brandTagline}
-                      </span>
-                    </div>
-                  </div>
+                  <Image
+                    src="/Webline-logo.png"
+                    alt={config.brandName}
+                    width={140}
+                    height={40}
+                    className="h-auto w-32 cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={() => handleNavClick('#hero')}
+                    data-editable-src="logoUrl"
+                  />
                 </div>
 
                 <nav className="flex flex-col space-y-4" role="navigation">
